@@ -1,0 +1,39 @@
+<!-- orders.component.html -->
+
+<div class="p-6 min-h-screen">
+    <h2 class="text-2xl font-semibold text-neutral-700 mb-6">Order Management</h2>
+
+    <div class="bg-white rounded-lg shadow-md overflow-x-auto">
+        <table class="min-w-full bg-white rounded-lg border border-neutral-300">
+            <thead>
+                <tr class="bg-neutral-200 text-neutral-600">
+                    <th class="p-4 text-left whitespace-nowrap">Order ID</th>
+                    <th class="p-4 text-left whitespace-nowrap">Customer</th>
+                    <th class="p-4 text-left whitespace-nowrap">Status</th>
+                    <th class="p-4 text-left whitespace-nowrap hidden md:table-cell">Date</th>
+                    <th class="p-4 text-left whitespace-nowrap hidden md:table-cell">Total ($)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let order of orders" class="border-t border-neutral-200 hover:bg-neutral-100 cursor-pointer"
+                    (click)="navigateToOrder(order.id)">
+                    <td class="p-4 text-neutral-700 whitespace-nowrap">{{ order.id }}</td>
+                    <td class="p-4 text-neutral-700 whitespace-nowrap">{{ order.customer }}</td>
+                    <td class="p-4 text-neutral-700 whitespace-nowrap">
+                        <span class="px-2 py-1 rounded-full text-sm" [ngClass]="{
+                          'bg-green-200 text-green-800': order.status === 'Delivered',
+                          'bg-blue-200 text-blue-800': order.status === 'Shipped',
+                          'bg-yellow-200 text-yellow-800': order.status === 'Pending',
+                          'bg-red-200 text-red-800': order.status === 'Canceled'
+                        }">
+                            {{ order.status }}
+                        </span>
+                    </td>
+                    <td class="p-4 text-neutral-700 whitespace-nowrap hidden md:table-cell">{{ order.date }}</td>
+                    <td class="p-4 text-neutral-700 whitespace-nowrap hidden md:table-cell">{{ order.total | currency }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
