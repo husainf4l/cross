@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit-order',
@@ -14,7 +14,8 @@ export class EditOrderComponent implements OnInit {
   orderId!: string;
   orderData: any;
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(private route: ActivatedRoute, private router: Router) { }
+
 
   ngOnInit(): void {
     this.orderId = this.route.snapshot.paramMap.get('orderId')!;
@@ -22,14 +23,33 @@ export class EditOrderComponent implements OnInit {
   }
 
   fetchOrderData(orderId: string) {
-    const ordersMock = [
-      { id: 'ORD-001', customer: 'John Doe', date: '2024-11-05', status: 'Shipped', total: 120.99 },
-      { id: 'ORD-002', customer: 'Jane Smith', date: '2024-11-04', status: 'Pending', total: 75.49 },
-      { id: 'ORD-003', customer: 'Ali Saleh', date: '2024-11-03', status: 'Delivered', total: 200.00 },
-      { id: 'ORD-004', customer: 'Sara Kamel', date: '2024-11-02', status: 'Canceled', total: 50.25 },
-    ];
-
-    this.orderData = ordersMock.find(order => order.id === orderId);
+    // Sample mock data; in a real app, fetch from API
+    this.orderData = {
+      id: orderId,
+      customer: 'John Doe',
+      date: '2024-11-05',
+      status: 'Shipped',
+      shippingAddress: '123 Main St, Springfield, USA',
+      products: [
+        { name: 'Skinior Serum', quantity: 2, price: 29.99 },
+        { name: 'Toppik Hair Fiber', quantity: 1, price: 24.99 },
+      ],
+      notes: 'Customer requested gift packaging.',
+    };
   }
+
+  calculateTotal(): number {
+    return this.orderData.products.reduce((total: number, product: any) => {
+      return total + product.price * product.quantity;
+    }, 0);
+  }
+
+  saveChanges() {
+    this.router.navigate([`/orders`]);
+
+    console.log('Order saved:', this.orderData);
+
+  }
+
 
 }
