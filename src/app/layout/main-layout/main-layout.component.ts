@@ -13,7 +13,7 @@ import { NavbarComponent } from "../../components/navbar/navbar.component";
   imports: [MatSidenavModule, MatIconModule, RouterOutlet, HeaderComponent, NavbarComponent]
 })
 export class MainLayoutComponent {
-  isSidebarOpen = true;
+  isSidebarOpen = false;
 
   toggleSidebar() {
     this.isSidebarOpen = !this.isSidebarOpen;
