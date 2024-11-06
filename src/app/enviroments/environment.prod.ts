@@ -1,4 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://skinior.com/api',
+    apiUrl: 'https://admin.papayatrading.com/api',
 };
