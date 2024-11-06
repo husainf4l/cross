@@ -39,6 +39,13 @@ export const routes: Routes = [
                         (c) => c.OperationComponent
                     ),
             },
+            {
+                path: 'points/users',
+                loadComponent: () =>
+                    import('./pages/points/points-users/points-users.component').then(
+                        (c) => c.PointsUsersComponent
+                    ),
+            },
         ],
     },
 ];

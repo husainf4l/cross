@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { OrderService } from '../../services/order.service';
 import { Order } from '../../services/models/interfaces.model';
-import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-orders',
