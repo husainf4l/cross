@@ -2,54 +2,42 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { OrderService } from '../../../services/order.service';
+import { Order } from '../../../services/models/interfaces.model';
+import { Observable } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edit-order',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './edit-order.component.html',
-  styleUrl: './edit-order.component.css'
+  styleUrls: ['./edit-order.component.css'] // Corrected 'styleUrls' here
 })
 export class EditOrderComponent implements OnInit {
   orderId!: string;
-  orderData: any;
+  orderData!: Order;
 
-  constructor(private route: ActivatedRoute, private router: Router) { }
-
+  constructor(private route: ActivatedRoute, private router: Router, private orderService: OrderService) { }
 
   ngOnInit(): void {
     this.orderId = this.route.snapshot.paramMap.get('orderId')!;
     this.fetchOrderData(this.orderId);
   }
 
-  fetchOrderData(orderId: string) {
-    // Sample mock data; in a real app, fetch from API
-    this.orderData = {
-      id: orderId,
-      customer: 'John Doe',
-      date: '2024-11-05',
-      status: 'Shipped',
-      shippingAddress: '123 Main St, Springfield, USA',
-      products: [
-        { name: 'Skinior Serum', quantity: 2, price: 29.99 },
-        { name: 'Toppik Hair Fiber', quantity: 1, price: 24.99 },
-      ],
-      notes: 'Customer requested gift packaging.',
-    };
-  }
-
-  calculateTotal(): number {
-    return this.orderData.products.reduce((total: number, product: any) => {
-      return total + product.price * product.quantity;
-    }, 0);
-  }
-
-  saveChanges() {
-    this.router.navigate([`/orders`]);
-
-    console.log('Order saved:', this.orderData);
-
+  fetchOrderData(orderId: string): void {
+    this.orderService.getOrderById(orderId).subscribe(order => {
+      this.orderData = order;
+    });
   }
 
 
+
+  saveChanges(): void {
+    const orderEdit: any = { notes: this.orderData.notes, status: this.orderData.status }
+    this.orderService.updateOrder(this.orderId, orderEdit).subscribe(() => {
+      console.log('Order saved:', this.orderData);
+      this.router.navigate(['/orders']);
+    });
+  }
 }

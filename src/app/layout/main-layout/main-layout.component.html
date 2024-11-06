@@ -1,7 +1,7 @@
 <mat-sidenav-container class="h-screen">
     <mat-sidenav #sidenav mode="side" [(opened)]="isSidebarOpen"
         style="border-radius: 0; height: 100vh; background-color: #515b69 !important; width: 256px;">
-        <app-navbar></app-navbar>
+        <app-navbar (menuItemClicked)="toggleSidebar()"></app-navbar>
     </mat-sidenav>
 
     <mat-sidenav-content class="flex flex-col h-full bg-neutral-100">

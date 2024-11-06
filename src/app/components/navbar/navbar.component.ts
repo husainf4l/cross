@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list'; // For mat-list-item styling
 import { RouterModule } from '@angular/router';
@@ -10,4 +10,10 @@ import { RouterModule } from '@angular/router';
   templateUrl: './navbar.component.html',
   styleUrls: ['./navbar.component.css']
 })
-export class NavbarComponent { }
+export class NavbarComponent {
+  @Output() menuItemClicked = new EventEmitter<void>();
+
+  onMenuItemClick() {
+    this.menuItemClicked.emit();
+  }
+}

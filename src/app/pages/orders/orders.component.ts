@@ -1,8 +1,12 @@
 // orders.component.ts
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { OrderService } from '../../services/order.service';
+import { Order } from '../../services/models/interfaces.model';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-orders',
@@ -11,15 +15,17 @@ import { Router } from '@angular/router';
   standalone: true,
   imports: [CommonModule]
 })
-export class OrdersComponent {
-  constructor(private router: Router) { }
+export class OrdersComponent implements OnInit {
+  orders$: Observable<Order[]> | undefined;
 
-  orders = [
-    { id: 'ORD-001', customer: 'John Doe', date: '2024-11-05', status: 'Shipped', total: 120.99 },
-    { id: 'ORD-002', customer: 'Jane Smith', date: '2024-11-04', status: 'Pending', total: 75.49 },
-    { id: 'ORD-003', customer: 'Ali Saleh', date: '2024-11-03', status: 'Delivered', total: 200.00 },
-    { id: 'ORD-004', customer: 'Sara Kamel', date: '2024-11-02', status: 'Canceled', total: 50.25 },
-  ];
+  constructor(private router: Router, private orderService: OrderService) { }
+
+  ngOnInit(): void {
+    this.fetchOrders();
+  }
+  fetchOrders(): void {
+    this.orders$ = this.orderService.getOrders();
+  }
 
   navigateToOrder(orderId: string) {
     this.router.navigate([`/order/edit/${orderId}`]);
