@@ -28,9 +28,7 @@ export class PointsUsersComponent implements OnInit {
   }
 
   fetchUsers(): void {
-    this.pointService.getUsersOnce().then((users) => {
-      this.users = users;
-    });
+    return
   }
 
 
