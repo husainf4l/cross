@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { POINTS_ROUTES } from './pages/points/points.routes';
 
 export const routes: Routes = [
     {
@@ -40,12 +41,11 @@ export const routes: Routes = [
                     ),
             },
             {
-                path: 'points/users',
-                loadComponent: () =>
-                    import('./pages/points/points-users/points-users.component').then(
-                        (c) => c.PointsUsersComponent
-                    ),
+                path: 'points',
+                children: POINTS_ROUTES,
             },
+
+
         ],
     },
 ];

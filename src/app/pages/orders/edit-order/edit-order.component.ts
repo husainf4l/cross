@@ -8,11 +8,10 @@ import { Observable } from 'rxjs';
 import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-edit-order',
-  standalone: true,
-  imports: [CommonModule, FormsModule],
-  templateUrl: './edit-order.component.html',
-  styleUrls: ['./edit-order.component.css'] // Corrected 'styleUrls' here
+    selector: 'app-edit-order',
+    imports: [CommonModule, FormsModule],
+    templateUrl: './edit-order.component.html',
+    styleUrls: ['./edit-order.component.css'] // Corrected 'styleUrls' here
 })
 export class EditOrderComponent implements OnInit {
   orderId!: string;

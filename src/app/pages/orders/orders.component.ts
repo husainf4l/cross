@@ -11,8 +11,8 @@ import { Order } from '../../services/models/interfaces.model';
   selector: 'app-orders',
   templateUrl: './orders.component.html',
   styleUrls: ['./orders.component.css'],
-  standalone: true,
-  imports: [CommonModule]
+  imports: [CommonModule],
+  standalone: true
 })
 export class OrdersComponent implements OnInit {
   orders$: Observable<Order[]> | undefined;

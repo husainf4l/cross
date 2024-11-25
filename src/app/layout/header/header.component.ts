@@ -9,7 +9,6 @@ import { MatSidenavModule } from '@angular/material/sidenav';
   styleUrls: ['./header.component.css'],
   standalone: true,
   imports: [MatSidenavModule, MatIconModule]
-
 })
 export class HeaderComponent {
   @Output() toggleSidebarEvent = new EventEmitter<void>();

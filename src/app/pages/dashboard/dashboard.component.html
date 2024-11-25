@@ -6,13 +6,13 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-md p-6 text-center border border-neutral-200">
             <h3 class="text-xl font-semibold text-neutral-700 mb-2">Skinior.com Sales</h3>
-            <p class="text-neutral-500">Revenue: ${{ salesSummary.skinior.revenue | number }}</p>
+            <p class="text-neutral-500">Revenue: ${{ salesSummary.skinior.revenue }}</p>
             <p class="text-neutral-500">Orders: {{ salesSummary.skinior.orders }}</p>
             <p class="text-neutral-500">Products Sold: {{ salesSummary.skinior.products }}</p>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6 text-center border border-neutral-200">
             <h3 class="text-xl font-semibold text-neutral-700 mb-2">Toppik.jo Sales</h3>
-            <p class="text-neutral-500">Revenue: ${{ salesSummary.toppik.revenue | number }}</p>
+            <p class="text-neutral-500">Revenue: ${{ salesSummary.toppik.revenue }}</p>
             <p class="text-neutral-500">Orders: {{ salesSummary.toppik.orders }}</p>
             <p class="text-neutral-500">Products Sold: {{ salesSummary.toppik.products }}</p>
         </div>
@@ -22,7 +22,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
         <div class="bg-white rounded-lg shadow-md p-6 text-center border border-neutral-200">
             <h3 class="text-xl font-semibold text-neutral-700 mb-2">Total Points Distributed</h3>
-            <p class="text-neutral-500">{{ pointsSummary.totalPoints | number }}</p>
+            <p class="text-neutral-500">{{ pointsSummary.totalPoints }}</p>
         </div>
         <div class="bg-white rounded-lg shadow-md p-6 text-center border border-neutral-200">
             <h3 class="text-xl font-semibold text-neutral-700 mb-2">Active Users</h3>

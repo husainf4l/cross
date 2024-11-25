@@ -1,0 +1,50 @@
+<div class="min-h-screen bg-neutral-100">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Points V2 Users</h2>
+    <!-- User Details Section -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <div class="grid grid-cols-4 gap-4">
+            <p><strong>User ID:</strong> sdcds</p>
+            <p><strong>User Name:</strong> dfs</p>
+            <p><strong>PoS Name:</strong> fsd</p>
+            <p><strong>Last Seen:</strong> dsfds</p>
+            <p><strong>Points:</strong> sdfdfds</p>
+            <p><strong>Phone Number:</strong> dsfdds</p>
+        </div>
+    </div>
+    <!-- Table -->
+    <div class="bg-white rounded-lg shadow-md overflow-x-auto">
+        <table class="min-w-full bg-white rounded-lg border border-neutral-300">
+            <thead class="bg-gray-200 text-gray-600 uppercase text-sm">
+                <tr>
+                    <th class="py-3 px-6 text-left">User Name</th>
+                    <th class="py-3 px-6 text-left">PoS Name</th>
+                    <th class="py-3 px-6 text-left">lastSeen</th>
+                    <th class="py-3 px-6 text-left">Points</th>
+                    <th class="py-3 px-6 text-left">phoneNumber</th>
+                    <th class="py-3 text-left w-20">details</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let user of users" class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6">{{ user.UserName }}</td>
+                    <td class="py-3 px-6">{{ user.posName }}</td>
+                    <td class="py-3 px-6">{{ user.lastSeen | date: 'dd/MM/yyyy h:mm a' }}</td>
+                    <td class="py-3 px-6">{{ user.points }}</td>
+                    <td class="py-3 px-6">{{ user.phoneNumber }}
+                    <td class="py-3 text-center">
+                        <a [routerLink]="['/points/userdetails-v2/', user.UserUid]"
+                            class="text-neutral-500 hover:text-neutral-700">
+                            <mat-icon>visibility</mat-icon> <!-- Material icon for details -->
+                        </a>
+                    </td>
+
+
+
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>
