@@ -7,15 +7,19 @@ export interface v2UserRecord {
     phoneNumber: string
     createdOn: Date;
     fCMToken: string
+    bracket?: string
 
 }
 
 
 export interface v2Transactions {
+    balance: number;
+    walletNumber?: string;
+    walletType?: string;
     id: string;
     UserUid: string;
     UserName: string;
-    posName: string;
+    PosName: string;
     notes: string;
     points: number;
     status: string;
@@ -23,6 +27,7 @@ export interface v2Transactions {
     checkedOn: Date;
     type: number;
     isChecked: boolean;
+    image: string;
 
 
 }

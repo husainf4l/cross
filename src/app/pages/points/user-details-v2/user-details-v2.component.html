@@ -1,24 +1,45 @@
 <div class="min-h-screen bg-neutral-100 ">
     <h2 class="text-3xl font-semibold text-gray-800 mb-6">Profile Information</h2>
+    <div *ngIf="isLoading" class="flex justify-center items-center h-screen">
+        <div
+            class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 border-t-blue-500 h-12 w-12 animate-spin">
+        </div>
+    </div>
 
     <!-- User Details Section -->
     <div class="bg-white p-6 rounded-lg shadow-md mb-8">
-        <div class="grid grid-cols-4 gap-4">
-            <p><span class="font-semibold">Name:</span> {{ user?.UserName }}</p>
-            <p><span class="font-semibold">Number:</span> {{ user?.phoneNumber }}</p>
-            <p><span class="font-semibold">POS Name:</span> {{ user?.posName }}</p>
-            <p><span class="font-semibold">Points:</span> {{ user?.points }}</p>
-            <p><span class="font-semibold">Created on:</span>{{ user?.createdOn | date: 'dd/MM/yyyy h:mm a' }}</p>
-            <p><strong>Last Seen:</strong> {{ user?.lastSeen | date: 'dd/MM/yyyy h:mm a' }}</p>
-            <p><span class="font-semibold">User Uid:</span> {{ userId }}</p>
-            <p><span class="font-semibold">Total Transactions:</span> {{ transactions.length }}</p>
-            <p>
-                <button
-                    class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition"
-                    (click)="sendMessage()">
-                    Send Message
-                </button>
-            </p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+                <p><span class="font-semibold">Name:</span> {{ user?.UserName }}</p>
+                <p><span class="font-semibold">Number:</span> {{ user?.phoneNumber }}</p>
+                <p><span class="font-semibold">POS Name:</span> {{ user?.posName }}</p>
+                <p><span class="font-semibold">User Uid:</span> {{ userId }}</p>
+                <p><span class="font-semibold">Points:</span> {{ user?.points }}</p>
+
+
+
+
+            </div>
+            <div>
+                <p><span class="font-semibold">Created on:</span>{{ user?.createdOn | date: 'dd/MM/yyyy h:mm a' }}</p>
+
+                <p><span class="font-semibold">Total Transactions:</span> {{ transactions.length }}</p>
+                <p><span class="font-semibold">Sales Transactions:</span> {{ salesTransactionsCount }}</p>
+
+                <p><span class="font-semibold">Redeem Transactions:</span> {{ redeemTransactionsCount }}</p>
+
+            </div>
+            <div>
+                <p><strong>Last Seen:</strong> {{ user?.lastSeen | date: 'dd/MM/yyyy h:mm a' }}</p>
+
+                <p><span class="font-semibold">Point System Balance:</span> {{ totalSalesPoints + totalRedeemPoints }}
+                    points </p>
+                <p><span class="font-semibold">Total Sales Points:</span> {{ totalSalesPoints }}</p>
+                <p><span class="font-semibold">Total Redeem Points:</span> {{ totalRedeemPoints }}</p>
+
+            </div>
+
+
         </div>
     </div>
 
@@ -52,8 +73,9 @@
                         <th class="py-3 px-6 text-left">Type</th>
                         <th class="py-3 px-6 text-left">Created On</th>
                         <th class="py-3 px-6 text-left">Checked On</th>
-                        <th class="py-3 px-6 text-left">Points</th>
                         <th class="py-3 px-6 text-left">Status</th>
+                        <th class="py-3 px-6 text-left">Points</th>
+                        <th class="py-3 px-6 text-left">Balance</th>
                         <th class="py-3 text-center w-20">Action</th>
                     </tr>
                 </thead>
@@ -75,17 +97,20 @@
                         <!-- Date Columns -->
                         <td class="py-3 px-6">{{ transaction.createdOn | date: 'dd/MM/yyyy h:mm a' }}</td>
                         <td class="py-3 px-6">{{ transaction.checkedOn | date: 'dd/MM/yyyy h:mm a' }}</td>
+                        <td class="py-3 px-6">{{ transaction.status }}</td>
 
                         <!-- Points and Status -->
                         <td class="py-3 px-6">{{ transaction.points }}</td>
-                        <td class="py-3 px-6">{{ transaction.status }}</td>
+                        <td class="py-3 px-6">{{ transaction.balance }}</td>
+
 
                         <!-- Action Column -->
                         <td class="py-3 text-center">
-                            <a [routerLink]="['/points/userdetails-v2/', transaction.id]"
+                            <a [routerLink]="['../../transactionsdetails-v2/', transaction.id]"
                                 class="text-neutral-500 hover:text-neutral-700">
                                 <mat-icon>arrow_forward_ios</mat-icon>
                             </a>
+
                         </td>
                     </tr>
                 </tbody>

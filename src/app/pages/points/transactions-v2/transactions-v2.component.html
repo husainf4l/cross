@@ -1,1 +1,97 @@
-<p>transactions-v2 works!</p>
+<div class="min-h-screen bg-neutral-100 ">
+    <h2 class="text-3xl font-semibold text-gray-800 mb-6">Profile Information</h2>
+    <div *ngIf="isLoading" class="flex justify-center items-center h-screen">
+        <div
+            class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 border-t-blue-500 h-12 w-12 animate-spin">
+        </div>
+    </div>
+    <!-- User Details Section -->
+    <div class="bg-white p-6 rounded-lg shadow-md mb-8">
+        <div class="grid grid-cols-4 gap-4">
+
+
+            <p><span class="font-semibold">Total Sales Points:</span> {{ totalSalesPoints }}</p>
+            <p><span class="font-semibold">Sales Transactions:</span> {{ salesTransactionsCount }}</p>
+            <p><span class="font-semibold">Total Redeem Points:</span> {{ totalRedeemPoints }}</p>
+            <p><span class="font-semibold">Redeem Transactions:</span> {{ redeemTransactionsCount }}</p>
+            <p><span class="font-semibold">Total Transactions:</span> {{ transactions.length }}</p>
+            <p><span class="font-semibold">Point System Balance:</span>
+                {{ Math.round(totalSalesPoints + totalRedeemPoints) }} points
+            </p>
+
+
+        </div>
+    </div>
+
+
+    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+        <div>
+            <div class="p-5  flex justify-between items-center bg-white">
+                <h3 class="text-xl font-bold text-gray-700">Transactions</h3>
+                <div class="space-x-2">
+                    <button (click)="filterTransactions(1)"
+                        class="px-4 py-2 bg-lime-600 text-white font-medium rounded-lg shadow hover:bg-lime-700 transition">
+                        Show Sales
+                    </button>
+                    <button (click)="filterTransactions(2)"
+                        class="px-4 py-2 bg-rose-700 text-white font-medium rounded-lg shadow hover:bg-rose-900 transition">
+                        Show Redeem
+                    </button>
+                    <button (click)="filterTransactions(null)"
+                        class="px-4 py-2 bg-gray-500 text-white font-medium rounded-lg shadow hover:bg-gray-600 transition">
+                        Show All
+                    </button>
+                </div>
+            </div>
+
+            <table class="min-w-full text-sm">
+                <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                    <tr>
+                        <th class="py-3 px-6 text-left">#</th>
+                        <th class="py-3 px-6 text-left">Type</th>
+                        <th class="py-3 px-6 text-left">User Name</th>
+                        <th class="py-3 px-6 text-left">Pos Name</th>
+
+                        <th class="py-3 px-6 text-left">Created On</th>
+                        <th class="py-3 px-6 text-left">Points</th>
+                        <th class="py-3 px-6 text-left">Status</th>
+                        <th class="py-3 text-center w-20">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let transaction of filteredTransactions; let i = index"
+                        class="border-b border-gray-200 hover:bg-gray-100"
+                        [ngClass]="{ 'bg-red-50': !transaction.isChecked }">
+                        <td class="py-3 px-6">{{ filteredTransactions.length - i }}</td>
+
+                        <!-- Transaction Type -->
+                        <td class="py-3 px-6 text-left">
+                            <mat-icon class="text-xl">
+                                {{ transaction.type === 1 ? 'receipt_long' : (transaction.type === 2 ? 'payments' :
+                                'help')
+                                }}
+                            </mat-icon>
+                        </td>
+                        <td class="py-3 px-6">{{ transaction.UserName }}</td>
+                        <td class="py-3 px-6">{{ transaction.PosName }}</td>
+
+
+                        <!-- Date Columns -->
+                        <td class="py-3 px-6">{{ transaction.createdOn | date: 'dd/MM/yyyy h:mm a' }}</td>
+
+                        <!-- Points and Status -->
+                        <td class="py-3 px-6">{{ transaction.points }}</td>
+                        <td class="py-3 px-6">{{ transaction.status }}</td>
+
+                        <!-- Action Column -->
+                        <td class="py-3 text-center">
+                            <a [routerLink]="['../transactionsdetails-v2/', transaction.id]"
+                                class="text-neutral-500 hover:text-neutral-700">
+                                <mat-icon>arrow_forward_ios</mat-icon>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>

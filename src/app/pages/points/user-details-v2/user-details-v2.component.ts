@@ -4,7 +4,6 @@ import { V2Service } from '../services/v2.service';
 import { v2Transactions, v2UserRecord } from '../services/models/points.model';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
-import { Token } from '@angular/compiler';
 
 @Component({
   selector: 'app-user-details-v2',
@@ -18,6 +17,7 @@ export class UserDetailsV2Component implements OnInit {
   user: v2UserRecord | undefined; // Holds the user details
   transactions: v2Transactions[] = [];
   filteredTransactions: v2Transactions[] = [];
+  isLoading = true;
 
 
   constructor(private route: ActivatedRoute, private v2Service: V2Service) { }
@@ -29,9 +29,13 @@ export class UserDetailsV2Component implements OnInit {
   }
 
   fetchUserDetails(): void {
+    this.isLoading = true;
+
     this.v2Service.getUserById(this.userId).subscribe({
       next: (data) => {
         this.user = data;
+        this.isLoading = false;
+
       },
       error: (err) => {
         console.error('Error fetching user details:', err);
@@ -40,10 +44,16 @@ export class UserDetailsV2Component implements OnInit {
   }
 
   fetchUserTransaction(): void {
+    this.isLoading = true;
+
     this.v2Service.getUserTransactions(this.userId).subscribe({
+
       next: (data) => {
         this.transactions = data;
         this.filteredTransactions = data;
+        this.isLoading = false;
+        this.calculateBalances();
+
       },
       error: (err) => {
         console.error('Error fetching user transactions:', err); // Updated error message
@@ -59,18 +69,56 @@ export class UserDetailsV2Component implements OnInit {
     }
   }
 
-  sendMessage() {
-    const token = this.user?.fCMToken || "";
-    const title = 'Download the new Update';
-    const message = 'okay';
 
-    this.v2Service.sendNotification(token, title, message).subscribe({
-      next: (response) => {
-        console.log('Notification sent successfully:', response);
-      },
-      error: (error) => {
-        console.error('Error sending notification:', error);
-      },
-    });
+
+  private calculateTotalPoints(type: number): number {
+    return this.transactions
+      .filter((t) => t.type === type)
+      .reduce((sum, t) => sum + (t.points || 0), 0);
   }
+
+  // Reusable method to calculate the length of transactions for a specific type
+  private calculateLength(type: number): number {
+    return this.transactions.filter((t) => t.type === type).length;
+  }
+
+  // Total points for sales (type 1)
+  get totalSalesPoints(): number {
+    return this.calculateTotalPoints(1);
+  }
+
+  // Length of sales transactions (type 1)
+  get salesTransactionsCount(): number {
+    return this.calculateLength(1);
+  }
+
+  // Total points for redeem (type 2)
+  get totalRedeemPoints(): number {
+    return this.calculateTotalPoints(2);
+  }
+
+  // Length of redeem transactions (type 2)
+  get redeemTransactionsCount(): number {
+    return this.calculateLength(2);
+  }
+
+  calculateBalances() {
+    let runningBalance = 0;
+
+    // Reverse for calculation and then reverse back
+    this.filteredTransactions = this.filteredTransactions
+      .slice() // Create a shallow copy to avoid mutating the original array
+      .reverse() // Reverse to start calculation from oldest to newest
+      .map(transaction => {
+        runningBalance += transaction.points;
+        return { ...transaction, balance: runningBalance };
+      })
+      .reverse(); // Reverse back to maintain original order (newest first)
+  }
+
+  printPage(): void {
+    window.print();
+  }
+
+
 }

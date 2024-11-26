@@ -34,6 +34,13 @@ export const POINTS_ROUTES: Routes = [
                         (c) => c.UserDetailsV2Component
                     ),
             },
+            {
+                path: 'transactionsdetails-v2/:id',
+                loadComponent: () =>
+                    import('./transactions-details-v2/transactions-details-v2.component').then(
+                        (c) => c.TransactionsDetailsV2Component
+                    ),
+            },
 
         ],
     },
