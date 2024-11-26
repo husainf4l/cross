@@ -24,7 +24,9 @@ export class V2Service {
     }
 
 
-
+    cleanCache() {
+        return this.http.get(`${this.apiUrl}/clean-cache`);
+    }
 
 
 

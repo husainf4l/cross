@@ -61,6 +61,11 @@ export class TransactionsV2Component implements OnInit {
       .reduce((sum, t) => sum + (t.points || 0), 0);
   }
 
+  cleanCach() {
+    this.v2Service.cleanCache();
+    return this.fetchTransaction();
+
+  }
   // Reusable method to calculate the length of transactions for a specific type
   private calculateLength(type: number): number {
     return this.transactions.filter((t) => t.type === type).length;
