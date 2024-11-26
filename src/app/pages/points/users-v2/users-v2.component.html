@@ -1,13 +1,8 @@
-<div class="min-h-screen bg-neutral-100">
+<div class="min-h-screen ">
     <h2 class="text-3xl font-semibold text-gray-800 mb-6">Points V2 Users</h2>
     <div class="bg-white p-6 rounded-lg shadow-md mb-8">
         <div class="grid grid-cols-4 gap-4">
-            <p><strong>User ID:</strong> sdcds</p>
-            <p><strong>User Name:</strong> dfs</p>
-            <p><strong>PoS Name:</strong> fsd</p>
-            <p><strong>Last Seen:</strong> dsfds</p>
-            <p><strong>Points:</strong> sdfdfds</p>
-            <p><strong>Phone Number:</strong> dsfdds</p>
+            <p><strong>Number of Users</strong> {{users.length}}</p>
         </div>
     </div>
 
@@ -42,7 +37,7 @@
                     <td class="py-3 text-center">
                         <a [routerLink]="['/points/userdetails-v2/', user.UserUid]"
                             class="text-neutral-500 hover:text-neutral-700">
-                            <mat-icon>visibility</mat-icon> <!-- Material icon for details -->
+                            <mat-icon>arrow_forward_ios</mat-icon> <!-- Material icon for details -->
                         </a>
                     </td>
 

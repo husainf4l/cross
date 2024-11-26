@@ -12,6 +12,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './transactions-details-v2.component.css'
 })
 export class TransactionsDetailsV2Component implements OnInit {
+
   transactionId!: string;
   transaction: v2Transactions | undefined;
   updatedPoints: number | undefined;
@@ -19,6 +20,7 @@ export class TransactionsDetailsV2Component implements OnInit {
   margoSales: number = 0; // Initialize Margo Points
   papayaSales: number = 0; // Initialize Papaya Points
   lavaSales: number = 0; // Initialize Lava Points
+  redemPoints: number = 0;
   notes: string = "";
   invRef: string = '';
   updateMessage: string = ''; // Message displayed after update
@@ -95,5 +97,20 @@ export class TransactionsDetailsV2Component implements OnInit {
     this.location.back();
 
   }
+
+  redeem() {
+    const data = {
+      currentPoints: Number(this.user?.points || 0),
+      UserUid: this.transaction?.UserUid || '',
+      fcmToken: this.user?.fCMToken || '',
+    };
+    this.transactionId, data
+
+  }
+
+  rejectRedem() {
+    throw new Error('Method not implemented.');
+  }
+
 
 }

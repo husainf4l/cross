@@ -4,13 +4,15 @@ import { V2Service } from '../services/v2.service';
 import { v2Transactions, v2UserRecord } from '../services/models/points.model';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-user-details-v2',
   templateUrl: './user-details-v2.component.html',
   styleUrls: ['./user-details-v2.component.css'],
   standalone: true,
-  imports: [CommonModule, RouterLink, MatIcon]
+  imports: [CommonModule, RouterLink, MatIcon,]
 })
 export class UserDetailsV2Component implements OnInit {
   userId!: string; // Holds the user ID from the route
@@ -27,6 +29,41 @@ export class UserDetailsV2Component implements OnInit {
     this.fetchUserDetails();
     this.fetchUserTransaction();
   }
+
+  generatePdf() {
+    const elementToPrint = document.getElementById('theContent');
+
+    if (!elementToPrint) {
+      console.error('Element to print not found');
+      return;
+    }
+
+    this.isLoading = true;
+    html2canvas(elementToPrint, { scale: 2 }).then((canvas) => {
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+
+      const pdf = new jsPDF('p', 'mm', 'a4'); // Correct instantiation
+      let position = 0;
+
+      pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      pdf.save('UserDetails.pdf');
+      this.isLoading = false;
+
+    });
+  }
+
+
 
   fetchUserDetails(): void {
     this.isLoading = true;
@@ -116,9 +153,8 @@ export class UserDetailsV2Component implements OnInit {
       .reverse(); // Reverse back to maintain original order (newest first)
   }
 
-  printPage(): void {
-    window.print();
-  }
+
+
 
 
 }

@@ -6,5 +6,11 @@ module.exports = {
   theme: {
     extend: {},
   },
+  variants: {
+    extend: {
+      display: ['print'], // Enable `print` variant for `display`
+    },
+  },
+
   plugins: [],
 };

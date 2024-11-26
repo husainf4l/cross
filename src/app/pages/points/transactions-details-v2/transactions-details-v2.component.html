@@ -24,7 +24,7 @@
                             ? 'Sales' :
                             'Redeem' }}</p>
                     </div>
-                    <div>
+                    <div *ngIf="transaction.type == 2">
                         <p><span class="font-semibold text-gray-700">Wallet type:</span> {{ transaction.walletType ||
                             "NA"
                             }}</p>
@@ -39,7 +39,7 @@
                         <p><span class="font-semibold text-gray-700">Status:</span> {{ transaction.status }}</p>
                     </div>
                     <div>
-                        <p>
+                        <p *ngIf="transaction.isChecked == true">
                             <span class="font-semibold text-gray-700">Checked On:</span>
                             {{ transaction.checkedOn ? (transaction.checkedOn | date: 'dd/MM/yyyy h:mm a') : "NA" }}
                         </p>
@@ -52,8 +52,9 @@
                 </div>
 
 
-                <h3 class="block mb-5 mt-5 text-2xl font-bold  text-gray-900">Update Points</h3>
-                <div>
+                <div *ngIf="transaction.type == 1">
+                    <h3 class="block mb-5 mt-5 text-2xl font-bold  text-gray-900">Update Points</h3>
+
                     <div class="mb-6 grid grid-cols-1 md:grid-cols-1 gap-6">
                         <div>
                             <label for="margo-points" class="block mb-2 text-sm font-medium text-gray-900">Invoice Ref
@@ -112,6 +113,33 @@
 
                     <!-- Update Message -->
                     <p *ngIf="updateMessage" class="mt-4 text-center ">{{ updateMessage }}</p>
+                </div>
+
+
+                <div *ngIf="transaction.type == 2">
+                    <div class="mb-6 grid grid-cols-1 md:grid-cols-1 gap-6">
+                        <div>
+                            <label for="lava-points" class="block mb-2 text-sm font-medium text-gray-900">Redem
+                                Points</label>
+                            <input id="lava-points" type="text" [(ngModel)]="redemPoints"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="0">
+                        </div>
+                        <input id="notes" type="text" [(ngModel)]="notes"
+                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            placeholder="Write rejection reason">
+                    </div>
+                    <div class="text-center flex gap-6   justify-center ">
+
+                        <button (click)="redeem()"
+                            class="  px-6 py-2 bg-red-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
+                            Reject Redem
+                        </button>
+                        <button (click)="rejectRedem()"
+                            class="  px-6 py-2 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
+                            Redeem
+                        </button>
+                    </div>
                 </div>
 
 
