@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { v2Transactions, v2UserRecord } from './models/points.model';
 import { environment } from '../../../environments/environment';
@@ -33,8 +33,13 @@ export class V2Service {
 
     //transactions
 
-    getTransactions(): Observable<v2Transactions[]> {
-        return this.http.get<v2Transactions[]>(`${this.apiUrl}/user-transactions/all`);
+    getTransactions(limit: number, toggle: boolean): Observable<v2Transactions[]> {
+        let params = new HttpParams();
+        if (limit) {
+            params = params.set('limit', limit.toString());
+        }
+        params = params.set('toggle', toggle.toString());
+        return this.http.get<v2Transactions[]>(`${this.apiUrl}/user-transactions/all`, { params });
     }
 
 
