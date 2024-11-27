@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { V2Service } from '../../services/v2.service';
+import { V1Service } from '../../../services/v1.service';
 
 @Component({
   selector: 'app-edit',
@@ -16,7 +16,7 @@ export class EditComponent {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private v2Service: V2Service
+    private v1Service: V1Service
   ) {
     this.transactionForm = this.fb.group({
       date: [null, Validators.required],
@@ -47,7 +47,7 @@ export class EditComponent {
       date: new Date(this.transactionForm.value.date).toISOString(),
     };
 
-    this.v2Service.addTransaction(transactionData).subscribe({
+    this.v1Service.addTransaction(transactionData).subscribe({
       next: (response) => {
         alert('Transaction added successfully!');
         this.transactionForm.reset();

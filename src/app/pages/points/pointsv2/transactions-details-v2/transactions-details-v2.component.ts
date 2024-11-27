@@ -1,8 +1,8 @@
 import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { v2Transactions, v2UserRecord } from '../services/models/points.model';
+import { v2Transactions, v2UserRecord } from '../../services/models/pointsv2.model';
 import { ActivatedRoute, Router } from '@angular/router';
-import { V2Service } from '../services/v2.service';
+import { V2Service } from '../../services/v2.service';
 import { FormsModule } from '@angular/forms';
 
 @Component({
@@ -26,6 +26,8 @@ export class TransactionsDetailsV2Component implements OnInit {
   updateMessage: string = ''; // Message displayed after update
   user: v2UserRecord | undefined;
   constructor(private route: ActivatedRoute, private v2Service: V2Service, private router: Router, private location: Location) { }
+  isEditingBracket = false; // Track editing state
+  editedBracket: number | undefined;
 
   ngOnInit(): void {
     this.transactionId = this.route.snapshot.paramMap.get('id') || '';
@@ -85,6 +87,47 @@ export class TransactionsDetailsV2Component implements OnInit {
       },
     });
   }
+
+  startEditingBracket(): void {
+    this.isEditingBracket = true;
+    this.editedBracket = this.user?.bracket;
+  }
+
+  saveBracket(): void {
+    if (this.editedBracket == null || this.editedBracket === this.user?.bracket) {
+      this.isEditingBracket = false; // Exit editing mode if no changes
+      return;
+    }
+
+    // Ensure the value is a number
+    const updatedBracket = Number(this.editedBracket);
+
+    if (isNaN(updatedBracket)) {
+      alert('Invalid bracket value. Please enter a valid number.');
+      return;
+    }
+
+    const data = {
+      UserUid: this.user?.UserUid || '',
+      bracket: updatedBracket,
+    };
+
+    this.v2Service.updateUserBracket(data).subscribe({
+      next: () => {
+        if (this.user) {
+          this.user.bracket = updatedBracket; // Update local user data
+        }
+        this.isEditingBracket = false; // Exit editing mode
+        console.log('Bracket updated successfully.');
+      },
+      error: (err) => {
+        console.error('Error updating bracket:', err);
+        alert('Failed to update bracket. Please try again.');
+        this.isEditingBracket = false;
+      },
+    });
+  }
+
 
 
   updatePoints(): void {

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { v2UserRecord } from '../services/models/points.model';
-import { V2Service } from '../services/v2.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { V2Service } from '../../services/v2.service';
+import { v2UserRecord } from '../../services/models/pointsv2.model';
 
 @Component({
   selector: 'app-users-v2',

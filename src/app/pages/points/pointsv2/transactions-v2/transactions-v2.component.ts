@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { v2Transactions } from '../services/models/points.model';
-import { V2Service } from '../services/v2.service';
 import { MatIcon } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { FormsModule } from '@angular/forms';
+import { v2Transactions } from '../../services/models/pointsv2.model';
+import { V2Service } from '../../services/v2.service';
 
 @Component({
   selector: 'app-transactions-v2',

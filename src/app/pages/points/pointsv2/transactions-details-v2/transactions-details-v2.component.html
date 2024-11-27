@@ -1,0 +1,177 @@
+<div class="w-full">
+    <div *ngIf="isLoading" class="text-center text-gray-500">
+        <p>Loading...</p>
+    </div>
+
+    <!-- Transaction Details -->
+    <div *ngIf="!isLoading && transaction" class="bg-white rounded-lg shadow-lg overflow-hidden">
+        <div class="flex flex-wrap md:flex-nowrap">
+            <!-- Information Section -->
+            <div class="w-full md:w-1/2 p-6">
+                <div class="mb-6">
+                    <h3 class="text-2xl font-bold text-gray-800">{{ transaction.UserName }} <span
+                            *ngIf="!isEditingBracket" (dblclick)="startEditingBracket()"
+                            class="text-red-500 cursor-pointer">
+                            {{ user?.bracket || 0 }}
+                        </span>
+                        <input *ngIf="isEditingBracket" [(ngModel)]="editedBracket" (blur)="saveBracket()"
+                            (keyup.enter)="saveBracket()" type="number" class="border rounded px-2 py-1 text-red-500"
+                            placeholder="Enter new bracket" [ngModelOptions]="{ updateOn: 'blur' }" step="0.1" />
+
+
+                    </h3>
+
+                    <p class="text-lg text-gray-500">{{ transaction.PosName }}</p>
+
+                </div>
+
+                <!-- Transaction Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7 border-t border-gray-200 pt-6">
+                    <div>
+                        <p><span class="font-semibold text-gray-700">ID:</span> {{ transaction.id }}</p>
+                        <p><span class="font-semibold text-gray-700">Transaction Type:</span> {{ transaction.type === 1
+                            ? 'Sales' :
+                            'Redeem' }}</p>
+                    </div>
+
+
+                    <div>
+
+                        <p><span class="font-semibold text-gray-700">Created On:</span> {{ transaction.createdOn | date:
+                            'dd/MM/yyyy h:mm a' }}</p>
+                        <p><span class="font-semibold text-gray-700">Status:</span> {{ transaction.status }}</p>
+                    </div>
+                    <div>
+                        <p><span class="font-semibold text-gray-700">Current Points:</span> {{ user?.points }}</p>
+
+                        <p><span class="font-semibold text-gray-700">Transaction Points:</span> {{ transaction.points }}
+                        </p>
+                    </div>
+                    <div>
+                        <p *ngIf="transaction.isChecked == true">
+                            <span class="font-semibold text-gray-700">Checked On:</span>
+                            {{ transaction.checkedOn ? (transaction.checkedOn | date: 'dd/MM/yyyy h:mm a') : "NA" }}
+                        </p>
+
+                        <p><span class="font-semibold text-gray-700">Is Checked:</span> {{ transaction.isChecked ? 'Yes'
+                            :
+                            'No' }}</p>
+                    </div>
+                    <div *ngIf="transaction.type == 2">
+                        <p><span class="font-semibold text-gray-700">Wallet type:</span> {{ transaction.walletType ||
+                            "NA"
+                            }}</p>
+                        <p><span class="font-semibold text-gray-700">Wallet number:</span> {{ transaction.walletNumber
+                            ||
+                            "NA" }}</p>
+                    </div>
+                </div>
+
+
+                <div *ngIf="transaction.type == 1">
+                    <h3 class="block mb-5 mt-5 text-2xl font-bold  text-gray-900">Update Points</h3>
+
+                    <div class="mb-6 grid grid-cols-1 md:grid-cols-1 gap-6">
+                        <div>
+                            <label for="margo-points" class="block mb-2 text-sm font-medium text-gray-900">Invoice Ref
+                            </label>
+                            <input id="margo-points" type="text" [(ngModel)]="invRef"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="invRef">
+                        </div>
+                        <!-- Margo Points -->
+                        <div>
+                            <label for="margo-points" class="block mb-2 text-sm font-medium text-gray-900">Margo
+                                Sales</label>
+                            <input id="margo-points" type="text" [(ngModel)]="margoSales"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="0">
+                        </div>
+
+                        <!-- Papaya Points -->
+                        <div>
+                            <label for="papaya-points" class="block mb-2 text-sm font-medium text-gray-900">Papaya
+                                Sales</label>
+                            <input id="papaya-points" type="text" [(ngModel)]="papayaSales"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="0">
+                        </div>
+
+                        <!-- Lava Points -->
+                        <div>
+                            <label for="lava-points" class="block mb-2 text-sm font-medium text-gray-900">Lava
+                                Sales</label>
+                            <input id="lava-points" type="text" [(ngModel)]="lavaSales"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="0">
+                        </div>
+                        <div>
+                            <label for="notes" class="block mb-2 text-sm font-medium text-gray-900">Rejection
+                                reason</label>
+                            <input id="notes" type="text" [(ngModel)]="notes"
+                                class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="Write rejection reason">
+                        </div>
+                    </div>
+
+                    <!-- Update Button -->
+                    <div class="text-center flex gap-6   justify-center " *ngIf="transaction.isChecked==false">
+
+                        <button (click)="updatePoints()"
+                            class="  px-6 py-2 bg-red-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
+                            Reject Transaction
+                        </button>
+                        <button (click)="updatePoints()"
+                            class="  px-6 py-2 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
+                            Update Points
+                        </button>
+                    </div>
+
+                    <!-- Update Message -->
+                    <p *ngIf="updateMessage" class="mt-4 text-center ">{{ updateMessage }}</p>
+                </div>
+
+
+                <div *ngIf="transaction.type == 2 && transaction.isChecked==false">
+                    <div class="mb-6 grid grid-cols-1 md:grid-cols-1 gap-6">
+                        <div>
+                            <label for="lava-points" class="block mb-2 text-sm font-medium text-gray-900">Redem
+                                Points</label>
+                            <input id="lava-points" type="text" [(ngModel)]="redemPoints"
+                                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                                placeholder="0">
+                        </div>
+                        <input id="notes" type="text" [(ngModel)]="notes"
+                            class=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            placeholder="Write rejection reason">
+                    </div>
+                    <div class="text-center flex gap-6   justify-center ">
+
+                        <button (click)="rejectRedem()"
+                            class="  px-6 py-2 bg-red-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
+                            Reject Redem
+                        </button>
+                        <button (click)="redeem()"
+                            class="  px-6 py-2 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
+                            Redeem
+                        </button>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- Image Section -->
+            <div class="w-full md:w-1/2 bg-gray-100  flex justify-center items-center">
+                <div class="relative group">
+                    <img [src]="transaction.image" alt="Transaction Image" class="w-full object-contain   " />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="!isLoading && !transaction" class="text-red-500 text-center mt-6">
+        <p>Transaction not found.</p>
+    </div>
+</div>

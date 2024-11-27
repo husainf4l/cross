@@ -10,19 +10,26 @@
             <div class="w-full md:w-1/2 p-6">
                 <div class="mb-6">
                     <h3 class="text-2xl font-bold text-gray-800">{{ transaction.UserName }} <span
-                            class="text-red-500">{{user?.bracket}}</span></h3>
+                            *ngIf="!isEditingBracket" (dblclick)="startEditingBracket()"
+                            class="text-red-500 cursor-pointer">
+                            {{ user?.bracket || 0 }}
+                        </span>
+                        <input *ngIf="isEditingBracket" [(ngModel)]="editedBracket" (blur)="saveBracket()"
+                            (keyup.enter)="saveBracket()" type="number" class="border rounded px-2 py-1 text-red-500"
+                            placeholder="Enter new bracket" [ngModelOptions]="{ updateOn: 'blur' }" step="0.1" />
 
-                    <p class="text-lg text-gray-500">{{ transaction.PosName }}</p>
+
+                    </h3>
+
 
                 </div>
 
                 <!-- Transaction Details -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-7 border-t border-gray-200 pt-6">
                     <div>
-                        <p><span class="font-semibold text-gray-700">Transaction ID:</span> {{ transaction.id }}</p>
-                        <p><span class="font-semibold text-gray-700">Transaction Type:</span> {{ transaction.type === 1
-                            ? 'Sales' :
-                            'Redeem' }}</p>
+                        <p><span class="font-semibold text-gray-700">ID:</span> {{ transaction.id }}</p>
+                        <p><span class="font-semibold text-gray-700">Transaction Type:</span> {{ transaction.title }}
+                        </p>
                     </div>
 
 
@@ -30,36 +37,27 @@
 
                         <p><span class="font-semibold text-gray-700">Created On:</span> {{ transaction.createdOn | date:
                             'dd/MM/yyyy h:mm a' }}</p>
-                        <p><span class="font-semibold text-gray-700">Status:</span> {{ transaction.status }}</p>
+                        <p><span class="font-semibold text-gray-700">Status:</span> {{ transaction.subTitle }}</p>
                     </div>
                     <div>
                         <p><span class="font-semibold text-gray-700">Current Points:</span> {{ user?.points }}</p>
 
-                        <p><span class="font-semibold text-gray-700">Transaction Points:</span> {{ transaction.points }}
-                        </p>
                     </div>
                     <div>
                         <p *ngIf="transaction.isChecked == true">
                             <span class="font-semibold text-gray-700">Checked On:</span>
-                            {{ transaction.checkedOn ? (transaction.checkedOn | date: 'dd/MM/yyyy h:mm a') : "NA" }}
+                            {{ transaction.doneBy ? (transaction.doneBy | date: 'dd/MM/yyyy h:mm a') : "NA" }}
                         </p>
 
                         <p><span class="font-semibold text-gray-700">Is Checked:</span> {{ transaction.isChecked ? 'Yes'
                             :
                             'No' }}</p>
                     </div>
-                    <div *ngIf="transaction.type == 2">
-                        <p><span class="font-semibold text-gray-700">Wallet type:</span> {{ transaction.walletType ||
-                            "NA"
-                            }}</p>
-                        <p><span class="font-semibold text-gray-700">Wallet number:</span> {{ transaction.walletNumber
-                            ||
-                            "NA" }}</p>
-                    </div>
+
                 </div>
 
 
-                <div *ngIf="transaction.type == 1">
+                <div>
                     <h3 class="block mb-5 mt-5 text-2xl font-bold  text-gray-900">Update Points</h3>
 
                     <div class="mb-6 grid grid-cols-1 md:grid-cols-1 gap-6">
@@ -123,7 +121,7 @@
                 </div>
 
 
-                <div *ngIf="transaction.type == 2 && transaction.isChecked==false">
+                <div>
                     <div class="mb-6 grid grid-cols-1 md:grid-cols-1 gap-6">
                         <div>
                             <label for="lava-points" class="block mb-2 text-sm font-medium text-gray-900">Redem
@@ -155,7 +153,7 @@
             <!-- Image Section -->
             <div class="w-full md:w-1/2 bg-gray-100  flex justify-center items-center">
                 <div class="relative group">
-                    <img [src]="transaction.image" alt="Transaction Image" class="w-full object-contain   " />
+                    <img [src]="transaction.adsUrl" alt="Transaction Image" class="w-full object-contain   " />
                 </div>
             </div>
         </div>

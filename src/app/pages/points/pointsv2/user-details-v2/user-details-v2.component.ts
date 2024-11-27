@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
-import { V2Service } from '../services/v2.service';
-import { v2Transactions, v2UserRecord } from '../services/models/points.model';
 import { CommonModule } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
+import { v2Transactions, v2UserRecord } from '../../services/models/pointsv2.model';
+import { V2Service } from '../../services/v2.service';
 
 @Component({
   selector: 'app-user-details-v2',

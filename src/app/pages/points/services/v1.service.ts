@@ -1,26 +1,26 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { v2Transactions, v2UserRecord } from './models/pointsv2.model';
 import { environment } from '../../../environments/environment';
+import { v1Transactions, v1UserRecord } from './models/pointsv1.model';
 
 
 @Injectable({
     providedIn: 'root'
 })
-export class V2Service {
-    private apiUrl = `${environment.apiUrl}/points-v2`;
+export class V1Service {
+    private apiUrl = `${environment.apiUrl}/points-v1`;
 
 
     constructor(private http: HttpClient) { }
 
 
-    getUsers(): Observable<v2UserRecord[]> {
-        return this.http.get<v2UserRecord[]>(`${this.apiUrl}/users`);
+    getUsers(): Observable<v1UserRecord[]> {
+        return this.http.get<v1UserRecord[]>(`${this.apiUrl}/users`);
     }
 
-    getUserById(UserUid: string): Observable<v2UserRecord> {
-        return this.http.get<v2UserRecord>(`${this.apiUrl}/users/${UserUid}`);
+    getUserById(UserUid: string): Observable<v1UserRecord> {
+        return this.http.get<v1UserRecord>(`${this.apiUrl}/users/${UserUid}`);
     }
 
 
@@ -62,27 +62,27 @@ export class V2Service {
     }
 
 
-    getTransactions(limit: number, toggle: boolean): Observable<v2Transactions[]> {
+    getTransactions(limit: number, toggle: boolean): Observable<v1Transactions[]> {
         let params = new HttpParams();
         if (limit) {
             params = params.set('limit', limit.toString());
         }
         params = params.set('toggle', toggle.toString());
-        return this.http.get<v2Transactions[]>(`${this.apiUrl}/user-transactions/all`, { params });
+        return this.http.get<v1Transactions[]>(`${this.apiUrl}/user-transactions/all`, { params });
     }
 
 
     getTransactionById(id: string) {
-        return this.http.get<v2Transactions>(`${this.apiUrl}/transactions/${id}`);
+        return this.http.get<v1Transactions>(`${this.apiUrl}/transactions/${id}`);
     }
 
 
-    getUserTransactions(UserUid: string): Observable<v2Transactions[]> {
-        return this.http.get<v2Transactions[]>(`${this.apiUrl}/user-transactions/${UserUid}`);
+    getUserTransactions(UserUid: string): Observable<v1Transactions[]> {
+        return this.http.get<v1Transactions[]>(`${this.apiUrl}/user-transactions/${UserUid}`);
     }
 
     //edit transaction 
-    updateTransactionPoints(transactionId: string, updatedTransaction: v2Transactions) {
+    updateTransactionPoints(transactionId: string, updatedTransaction: v1Transactions) {
         return this.http.put(`${environment.apiUrl}/transactions/${transactionId}`, updatedTransaction);
     }
 
@@ -101,9 +101,6 @@ export class V2Service {
         const url = `${this.apiUrl}/transactions/${transactionId}`;
         return this.http.put(url, data);
     }
-
-
-
 
 
 }

@@ -7,7 +7,7 @@ export interface v2UserRecord {
     phoneNumber: string
     createdOn: Date;
     fCMToken: string
-    bracket?: string
+    bracket?: number
 
 }
 
