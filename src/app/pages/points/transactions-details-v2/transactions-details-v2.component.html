@@ -17,26 +17,26 @@
                 </div>
 
                 <!-- Transaction Details -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 border-t border-gray-200 pt-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-7 border-t border-gray-200 pt-6">
                     <div>
                         <p><span class="font-semibold text-gray-700">Transaction ID:</span> {{ transaction.id }}</p>
                         <p><span class="font-semibold text-gray-700">Transaction Type:</span> {{ transaction.type === 1
                             ? 'Sales' :
                             'Redeem' }}</p>
                     </div>
-                    <div *ngIf="transaction.type == 2">
-                        <p><span class="font-semibold text-gray-700">Wallet type:</span> {{ transaction.walletType ||
-                            "NA"
-                            }}</p>
-                        <p><span class="font-semibold text-gray-700">Wallet number:</span> {{ transaction.walletNumber
-                            ||
-                            "NA" }}</p>
-                    </div>
+
+
                     <div>
 
                         <p><span class="font-semibold text-gray-700">Created On:</span> {{ transaction.createdOn | date:
                             'dd/MM/yyyy h:mm a' }}</p>
                         <p><span class="font-semibold text-gray-700">Status:</span> {{ transaction.status }}</p>
+                    </div>
+                    <div>
+                        <p><span class="font-semibold text-gray-700">Current Points:</span> {{ user?.points }}</p>
+
+                        <p><span class="font-semibold text-gray-700">Transaction Points:</span> {{ transaction.points }}
+                        </p>
                     </div>
                     <div>
                         <p *ngIf="transaction.isChecked == true">
@@ -48,7 +48,14 @@
                             :
                             'No' }}</p>
                     </div>
-                    <p><span class="font-semibold text-gray-700">Points:</span> {{ transaction.points }}</p>
+                    <div *ngIf="transaction.type == 2">
+                        <p><span class="font-semibold text-gray-700">Wallet type:</span> {{ transaction.walletType ||
+                            "NA"
+                            }}</p>
+                        <p><span class="font-semibold text-gray-700">Wallet number:</span> {{ transaction.walletNumber
+                            ||
+                            "NA" }}</p>
+                    </div>
                 </div>
 
 
@@ -99,7 +106,7 @@
                     </div>
 
                     <!-- Update Button -->
-                    <div class="text-center flex gap-6   justify-center ">
+                    <div class="text-center flex gap-6   justify-center " *ngIf="transaction.isChecked==false">
 
                         <button (click)="updatePoints()"
                             class="  px-6 py-2 bg-red-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
@@ -116,7 +123,7 @@
                 </div>
 
 
-                <div *ngIf="transaction.type == 2">
+                <div *ngIf="transaction.type == 2 && transaction.isChecked==false">
                     <div class="mb-6 grid grid-cols-1 md:grid-cols-1 gap-6">
                         <div>
                             <label for="lava-points" class="block mb-2 text-sm font-medium text-gray-900">Redem
@@ -131,11 +138,11 @@
                     </div>
                     <div class="text-center flex gap-6   justify-center ">
 
-                        <button (click)="redeem()"
+                        <button (click)="rejectRedem()"
                             class="  px-6 py-2 bg-red-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
                             Reject Redem
                         </button>
-                        <button (click)="rejectRedem()"
+                        <button (click)="redeem()"
                             class="  px-6 py-2 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
                             Redeem
                         </button>

@@ -36,25 +36,56 @@ export class TransactionsDetailsV2Component implements OnInit {
   fetchTransactionDetails(): void {
     this.isLoading = true;
 
+    // Fetch transaction details
     this.v2Service.getTransactionById(this.transactionId).subscribe({
-      next: (data) => {
-        this.transaction = data;
+      next: (transaction) => {
+        this.transaction = transaction;
         this.isLoading = false;
-        this.v2Service.getUserById(data!.UserUid).subscribe({
-          next: (data) => {
-            this.user = data;
-          },
-          error: (err) => {
-            console.error('Error fetching user details:', err);
-          },
-        })
+
+        // Fetch user details if transaction is valid
+        if (transaction?.UserUid) {
+          this.v2Service.getUserById(transaction.UserUid).subscribe({
+            next: (user) => {
+              this.user = user;
+            },
+            error: (err) => {
+              console.error("Error fetching user details:", err);
+            },
+          });
+        }
+
+        // Fetch company transaction details if transaction is checked
+        if (transaction?.isChecked) {
+          this.fetchCompanyTransactionDetails();
+        }
       },
       error: (err) => {
-        console.error('Error fetching transaction details:', err);
+        console.error("Error fetching transaction details:", err);
         this.isLoading = false;
       },
     });
   }
+  fetchCompanyTransactionDetails(): void {
+    this.v2Service.getCompanyTransactionById(this.transactionId).subscribe({
+      next: (data: any) => {
+        if (!data || data === "No data") {
+          console.log("No data available for this transaction.");
+          return;
+        }
+
+        // Populate sales data
+        console.log(data);
+        this.margoSales = data.data.margoSales;
+        this.lavaSales = data.data.lavaSales;
+        this.papayaSales = data.data.papayaSales;
+        this.invRef = data.data.invRef;
+      },
+      error: (err) => {
+        console.error("Error fetching company transaction details:", err);
+      },
+    });
+  }
+
 
   updatePoints(): void {
     const data = {
@@ -100,13 +131,25 @@ export class TransactionsDetailsV2Component implements OnInit {
 
   redeem() {
     const data = {
-      currentPoints: Number(this.user?.points || 0),
       UserUid: this.transaction?.UserUid || '',
       fcmToken: this.user?.fCMToken || '',
+      transactionId: this.transactionId || '',
+      points: this.redemPoints || 0,
+      currentPoints: this.user?.points || 0,
     };
-    this.transactionId, data
 
+    this.v2Service.redeemAdd(data).subscribe({
+      next: (response) => {
+        console.log('Redeem successful:', response);
+        this.location.back();
+      },
+      error: (err) => {
+        console.error('Error during redeem:', err);
+        alert('Failed to redeem points. Please try again later.');
+      },
+    });
   }
+
 
   rejectRedem() {
     throw new Error('Method not implemented.');

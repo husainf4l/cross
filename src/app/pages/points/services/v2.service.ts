@@ -29,9 +29,35 @@ export class V2Service {
     }
 
 
+    getCompanyTransactionById(transactionId: string) {
+        return this.http.get(`${this.apiUrl}/getcompanytransactionbyid/${transactionId}`)
+    }
 
 
-    //transactions
+    addTransaction(transactionData: {
+        UserUid: string;
+        UserName: string;
+        PosName: string;
+        type: number;
+        points: number;
+        createdOn: Date
+    }): Observable<any> {
+        return this.http.post(`${this.apiUrl}/edit/add`, transactionData);
+    }
+
+
+
+    redeemAdd(transactionData: {
+        transactionId: string,
+        UserUid: string,
+        points: number,
+        fcmToken: string,
+        currentPoints: number
+    }): Observable<any> {
+        return this.http.post(`${this.apiUrl}/redeem/add`, transactionData);
+    }
+
+
 
     getTransactions(limit: number, toggle: boolean): Observable<v2Transactions[]> {
         let params = new HttpParams();
