@@ -9,9 +9,8 @@
             <!-- Information Section -->
             <div class="w-full md:w-1/2 p-6">
                 <div class="mb-6">
-                    <h3 class="text-2xl font-bold text-gray-800">{{ transaction.UserName }} <span
-                            *ngIf="!isEditingBracket" (dblclick)="startEditingBracket()"
-                            class="text-red-500 cursor-pointer">
+                    <h3 class="text-2xl font-bold text-gray-800">{{ user?.UserName }} <span *ngIf="!isEditingBracket"
+                            (dblclick)="startEditingBracket()" class="text-red-500 cursor-pointer">
                             {{ user?.bracket || 0 }}
                         </span>
                         <input *ngIf="isEditingBracket" [(ngModel)]="editedBracket" (blur)="saveBracket()"
@@ -44,7 +43,7 @@
 
                     </div>
                     <div>
-                        <p *ngIf="transaction.isChecked == true">
+                        <p>
                             <span class="font-semibold text-gray-700">Checked On:</span>
                             {{ transaction.doneBy ? (transaction.doneBy | date: 'dd/MM/yyyy h:mm a') : "NA" }}
                         </p>
@@ -104,7 +103,7 @@
                     </div>
 
                     <!-- Update Button -->
-                    <div class="text-center flex gap-6   justify-center " *ngIf="transaction.isChecked==false">
+                    <div class="text-center flex gap-6   justify-center ">
 
                         <button (click)="updatePoints()"
                             class="  px-6 py-2 bg-red-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">

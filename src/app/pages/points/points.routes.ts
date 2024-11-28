@@ -74,7 +74,7 @@ export const POINTS_ROUTES: Routes = [
                     ),
             },
             {
-                path: 'transactionsdetails-v1/:id',
+                path: 'transactionsdetails-v1/:UserUid/:transactionId',
                 loadComponent: () =>
                     import('./pointsv1/transactions-details-v1/transactions-details-v1.component').then(
                         (c) => c.TransactionsDetailsv1Component

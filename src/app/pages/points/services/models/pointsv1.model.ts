@@ -7,7 +7,6 @@ export interface v1UserRecord {
     points: number;
     phoneNumber: string
     createdOn: Date;
-    fCMToken: string
     bracket?: number
 
 }

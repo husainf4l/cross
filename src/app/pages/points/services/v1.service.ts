@@ -51,7 +51,6 @@ export class V1Service {
         transactionId: string,
         UserUid: string,
         points: number,
-        fcmToken: string,
         currentPoints: number
     }): Observable<any> {
         return this.http.post(`${this.apiUrl}/redeem/add`, transactionData);
@@ -71,10 +70,12 @@ export class V1Service {
         return this.http.get<v1Transactions[]>(`${this.apiUrl}/user-transactions/all`, { params });
     }
 
-
-    getTransactionById(id: string) {
-        return this.http.get<v1Transactions>(`${this.apiUrl}/transactions/${id}`);
+    getTransactionById(id: string, UserUid: string) {
+        return this.http.get<v1Transactions>(
+            `${this.apiUrl}/transactions/${id}?useruid=${UserUid}`
+        );
     }
+
 
 
     getUserTransactions(UserUid: string): Observable<v1Transactions[]> {
@@ -96,7 +97,7 @@ export class V1Service {
 
     updateUserPoints(
         transactionId: string,
-        data: { margoSales: number; papayaSales: number; lavaSales: number; bracket: number; currentPoints: number; invRef: string, UserUid: string, userName: string, posName: string, fcmToken: string }
+        data: { margoSales: number; papayaSales: number; lavaSales: number; bracket: number; currentPoints: number; invRef: string, UserUid: string, userName: string, posName: string, }
     ): Observable<any> {
         const url = `${this.apiUrl}/transactions/${transactionId}`;
         return this.http.put(url, data);

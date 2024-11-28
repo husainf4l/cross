@@ -14,6 +14,8 @@ import { V1Service } from '../../services/v1.service';
 export class TransactionsDetailsv1Component implements OnInit {
 
   transactionId!: string;
+  UserUid!: string;
+
   transaction: v1Transactions | undefined;
   updatedPoints: number | undefined;
   isLoading = false;
@@ -30,51 +32,28 @@ export class TransactionsDetailsv1Component implements OnInit {
   editedBracket: number | undefined;
 
   ngOnInit(): void {
-    this.transactionId = this.route.snapshot.paramMap.get('id') || '';
+    this.transactionId = this.route.snapshot.paramMap.get('transactionId') || '';
+    this.UserUid = this.route.snapshot.paramMap.get('UserUid') || '';
+
     this.fetchTransactionDetails();
   }
-
-
-  // fetchTransactionDetails(): void {
-  //   this.isLoading = true;
-
-  //   // Fetch transaction details
-  //   this.v1Service.getTransactionById(this.transactionId).subscribe({
-  //     next: (transaction) => {
-  //       this.transaction = transaction;
-  //       this.isLoading = false;
-
-  //       // Fetch user details if transaction is valid
-  //       if (transaction?.UserUid) {
-  //         this.v1Service.getUserById(transaction.UserUid).subscribe({
-  //           next: (user) => {
-  //             this.user = user;
-  //           },
-  //           error: (err) => {
-  //             console.error("Error fetching user details:", err);
-  //           },
-  //         });
-  //       }
-
-  //       // Fetch company transaction details if transaction is checked
-  //       if (transaction?.isChecked) {
-  //         this.fetchCompanyTransactionDetails();
-  //       }
-  //     },
-  //     error: (err) => {
-  //       console.error("Error fetching transaction details:", err);
-  //       this.isLoading = false;
-  //     },
-  //   });
-  // }
 
 
 
   fetchTransactionDetails(): void {
     this.isLoading = true;
 
-    // Fetch transaction details
-    this.v1Service.getTransactionById(this.transactionId).subscribe({
+    this.v1Service.getUserById(this.UserUid).subscribe({
+      next: (user) => {
+        this.user = user;
+      },
+      error: (err) => {
+        console.error("Error fetching user details:", err);
+      },
+    });
+
+
+    this.v1Service.getTransactionById(this.transactionId, this.UserUid).subscribe({
       next: (transaction) => {
         this.transaction = transaction;
         this.isLoading = false;
@@ -146,7 +125,6 @@ export class TransactionsDetailsv1Component implements OnInit {
       UserUid: this.user?.UserUid || '',
       userName: this.user?.UserName || '',
       posName: this.user?.posName || '',
-      fcmToken: this.user?.fCMToken || '',
     };
 
     console.log('Updated Points:', data);
@@ -179,7 +157,6 @@ export class TransactionsDetailsv1Component implements OnInit {
   redeem() {
     const data = {
       UserUid: this.user?.UserUid || '',
-      fcmToken: this.user?.fCMToken || '',
       transactionId: this.transactionId || '',
       points: this.redemPoints || 0,
       currentPoints: this.user?.points || 0,
