@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { v1Transactions, v1UserRecord } from './models/pointsv1.model';
+import { v1Transactions, v1UserRecord, wallet } from './models/pointsv1.model';
 
 
 @Injectable({
@@ -73,6 +73,12 @@ export class V1Service {
     getTransactionById(id: string, UserUid: string) {
         return this.http.get<v1Transactions>(
             `${this.apiUrl}/transactions/${id}?useruid=${UserUid}`
+        );
+    }
+
+    getUserWallet(UserUid: string) {
+        return this.http.get<wallet[]>(
+            `${this.apiUrl}/wallet/${UserUid}`
         );
     }
 

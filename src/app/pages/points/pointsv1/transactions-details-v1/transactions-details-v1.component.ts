@@ -2,7 +2,7 @@ import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { v1Transactions, v1UserRecord } from '../../services/models/pointsv1.model';
+import { v1Transactions, v1UserRecord, wallet } from '../../services/models/pointsv1.model';
 import { V1Service } from '../../services/v1.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class TransactionsDetailsv1Component implements OnInit {
 
   transactionId!: string;
   UserUid!: string;
-
+  redemImage: string = 'https://firebasestorage.googleapis.com/v0/b/pointsv1.appspot.com/o/%D8%AD%D8%B1%D9%83%D8%A7%D8%AA%2Finvoices.jpg?alt=media&token=5e1c8d26-4603-4398-a504-2d4059c1b731'
   transaction: v1Transactions | undefined;
   updatedPoints: number | undefined;
   isLoading = false;
@@ -30,6 +30,8 @@ export class TransactionsDetailsv1Component implements OnInit {
   constructor(private route: ActivatedRoute, private v1Service: V1Service, private router: Router, private location: Location) { }
   isEditingBracket = false; // Track editing state
   editedBracket: number | undefined;
+
+  redeemWallet: wallet[] | undefined
 
   ngOnInit(): void {
     this.transactionId = this.route.snapshot.paramMap.get('transactionId') || '';
@@ -57,15 +59,21 @@ export class TransactionsDetailsv1Component implements OnInit {
       next: (transaction) => {
         this.transaction = transaction;
         this.isLoading = false;
-
-
-
+        if (transaction.adsUrl == this.redemImage) {
+          this.v1Service.getUserWallet(this.UserUid).subscribe({
+            next: (wallet) => {
+              this.redeemWallet = wallet;
+            }
+          })
+        }
       },
       error: (err) => {
         console.error("Error fetching transaction details:", err);
         this.isLoading = false;
       },
     });
+
+
   }
 
 

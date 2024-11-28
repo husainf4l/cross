@@ -1,10 +1,11 @@
-<div class="min-h-screen">
+<div class="min-h-screen bg-gray-50 p-4">
     <div *ngIf="isLoading" class="flex justify-center items-center h-screen">
         <div
             class="loader ease-linear rounded-full border-4 border-t-4 border-gray-200 border-t-blue-500 h-12 w-12 animate-spin">
         </div>
     </div>
 
+    <!-- Generate PDF Button -->
     <div class="no-print mb-4 flex justify-end">
         <button (click)="generatePdf()"
             class="px-4 py-2 bg-blue-500 text-white font-medium rounded-lg shadow hover:bg-blue-600 transition">
@@ -12,50 +13,42 @@
         </button>
     </div>
 
-    <div id="theContent">
-        <div class="bg-white p-6 rounded-lg shadow-md mb-8 ">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div id="theContent" class="space-y-8">
+        <!-- User Info Card -->
+        <div class="bg-white p-6 rounded-lg shadow-md">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Left Column -->
                 <div>
                     <p><span class="font-semibold">Name:</span> {{ user?.UserName }}</p>
                     <p><span class="font-semibold">Number:</span> {{ user?.phoneNumber }}</p>
                     <p><span class="font-semibold">POS Name:</span> {{ user?.posName }}</p>
                     <p><span class="font-semibold">User Uid:</span> {{ userId }}</p>
                     <p><span class="font-semibold">Points:</span> {{ user?.points }}</p>
-
-
-
-
                 </div>
+                <!-- Middle Column -->
                 <div>
-                    <p><span class="font-semibold">Created on:</span>{{ user?.createdOn | date: 'dd/MM/yyyy h:mm a' }}
+                    <p><span class="font-semibold">Created on:</span> {{ user?.createdOn | date: 'dd/MM/yyyy h:mm a' }}
                     </p>
-
                     <p><span class="font-semibold">Total Transactions:</span> {{ transactions.length }}</p>
-
                 </div>
+                <!-- Right Column -->
                 <div>
-                    <p><strong>Last Seen:</strong> {{ user?.lastseen | date: 'dd/MM/yyyy h:mm a' }}</p>
-
-
+                    <p><span class="font-semibold">Last Seen:</span> {{ user?.lastseen | date: 'dd/MM/yyyy h:mm a' }}
+                    </p>
                 </div>
-
-
             </div>
         </div>
 
-
-
         <!-- Transactions Table -->
-        <div class="bg-white rounded-lg shadow-md overflow-hidden">
-
-
+        <div class="bg-white rounded-lg shadow-md overflow-x-auto">
             <table class="min-w-full text-sm">
                 <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
                     <tr>
-                        <th class="py-3 px-6 text-left">#</th>
-                        <th class="py-3 px-6 text-left">title</th>
-                        <th class="py-3 px-6 text-left">Created On</th>
-                        <th class="py-3 px-6 text-left">Checked On</th>
+                        <th class="py-3 px-6 text-left hidden md:table-cell">#</th>
+                        <th class="py-3 px-6 text-left hidden md:table-cell">Created On</th>
+                        <th class="py-3 px-6 text-left hidden md:table-cell">Checked On</th>
+                        <th class="py-3 px-6 text-left">Title</th>
+                        <th class="py-3 px-6 text-left">Status</th>
                         <th class="py-3 text-center w-20">Action</th>
                     </tr>
                 </thead>
@@ -63,27 +56,18 @@
                     <tr *ngFor="let transaction of filteredTransactions; let i = index"
                         class="border-b border-gray-200 hover:bg-gray-100"
                         [ngClass]="{ 'bg-red-50': !transaction.isChecked }">
-                        <td class="py-3 px-6">{{ filteredTransactions.length - i }}</td>
-
-                        <!-- Transaction Type -->
-                        <td class="py-3 px-6 text-left">
-                            {{ transaction.title }}
+                        <td class="py-3 px-6 hidden md:table-cell">{{ filteredTransactions.length - i }}</td>
+                        <td class="py-3 px-6 hidden md:table-cell">{{ transaction.createdOn | date: 'dd/MM/yyyy h:mm a'
+                            }}</td>
+                        <td class="py-3 px-6 hidden md:table-cell">{{ transaction.doneBy | date: 'dd/MM/yyyy h:mm a' }}
                         </td>
-
-                        <!-- Date Columns -->
-                        <td class="py-3 px-6">{{ transaction.createdOn | date: 'dd/MM/yyyy h:mm a' }}</td>
-                        <td class="py-3 px-6">{{ transaction.doneBy | date: 'dd/MM/yyyy h:mm a' }}</td>
-
-                        <!-- Points and Status -->
-
-
-                        <!-- Action Column -->
+                        <td class="py-3 px-6 text-left">{{ transaction.title }}</td>
+                        <td class="py-3 px-6 text-left">{{ transaction.subTitle }}</td>
                         <td class="py-3 text-center">
                             <a [routerLink]="['../../transactionsdetails-v1/', userId, transaction.id]"
                                 class="text-neutral-500 hover:text-neutral-700">
                                 <mat-icon>arrow_forward_ios</mat-icon>
                             </a>
-
                         </td>
                     </tr>
                 </tbody>

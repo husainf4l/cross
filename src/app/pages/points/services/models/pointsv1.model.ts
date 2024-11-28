@@ -24,3 +24,13 @@ export interface v1Transactions {
 
 
 }
+
+
+export interface wallet {
+    AccountNumber: string;
+    Notes: String;
+    Type: String;
+    UserUid: String;
+    UserName: String;
+    createdOn: Date
+}

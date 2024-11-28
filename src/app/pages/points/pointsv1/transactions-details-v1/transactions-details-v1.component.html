@@ -42,6 +42,7 @@
                         <p><span class="font-semibold text-gray-700">Current Points:</span> {{ user?.points }}</p>
 
                     </div>
+
                     <div>
                         <p>
                             <span class="font-semibold text-gray-700">Checked On:</span>
@@ -56,7 +57,7 @@
                 </div>
 
 
-                <div>
+                <div *ngIf="transaction.adsUrl != redemImage">
                     <h3 class="block mb-5 mt-5 text-2xl font-bold  text-gray-900">Update Points</h3>
 
                     <div class="mb-6 grid grid-cols-1 md:grid-cols-1 gap-6">
@@ -120,7 +121,38 @@
                 </div>
 
 
-                <div>
+                <div *ngIf="transaction.adsUrl == redemImage">
+
+                    <div class="bg-white rounded-lg shadow-md overflow-x-auto m-10">
+                        <table class="min-w-full text-sm">
+                            <thead class="bg-gray-100 text-gray-600 uppercase text-xs">
+                                <tr>
+                                    <th class="py-3 px-6 text-left hidden md:table-cell">createdOn</th>
+                                    <th class="py-3 px-6 text-left hidden md:table-cell">notes</th>
+                                    <th class="py-3 px-6 text-left">Type</th>
+                                    <th class="py-3 px-6 text-left">AccountNumber</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let wallet of redeemWallet; let i = index"
+                                    class="border-b border-gray-200 hover:bg-gray-100">
+                                    <td class="py-3 px-6 hidden md:table-cell">{{ wallet.createdOn | date:
+                                        'dd/MM/yyyy h:mm a'
+                                        }}</td>
+                                    <td class="py-3 px-6 text-left">{{ wallet.Notes }}</td>
+
+                                    <td class="py-3 px-6 hidden md:table-cell">{{ wallet.Type}}
+                                    </td>
+
+
+                                    <td class="py-3 px-6 text-left">{{ wallet.AccountNumber }}</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+
                     <div class="mb-6 grid grid-cols-1 md:grid-cols-1 gap-6">
                         <div>
                             <label for="lava-points" class="block mb-2 text-sm font-medium text-gray-900">Redem
