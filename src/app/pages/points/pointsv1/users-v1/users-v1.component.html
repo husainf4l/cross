@@ -18,7 +18,8 @@
                 <tr>
                     <th class="py-3 px-6 text-left">User Name</th>
                     <th class="py-3 px-6 text-left">PoS Name</th>
-                    <th class="py-3 px-6 text-left">lastSeen</th>
+                    <th class="py-3 px-6 text-left">lastseen</th>
+                    <th class="py-3 px-6 text-left" *ngIf="debug == true">lastSeen</th>
                     <th class="py-3 px-6 text-left">Points</th>
                     <th class="py-3 px-6 text-left">phoneNumber</th>
                     <th class="py-3 text-left w-20">details</th>
@@ -32,6 +33,8 @@
                     <td class="py-3 px-6">{{ user.UserName }}</td>
                     <td class="py-3 px-6">{{ user.posName }}</td>
                     <td class="py-3 px-6">{{ user.lastseen | date: 'dd/MM/yyyy h:mm a' }}</td>
+                    <td class="py-3 px-6 text-sm text-gray-300" *ngIf="debug==true">{{ user.lastSeen | date: 'dd/MM/yy '
+                        }}</td>
                     <td class="py-3 px-6">{{ user.points }}</td>
                     <td class="py-3 px-6">{{ user.phoneNumber }}
                     <td class="py-3 text-center">

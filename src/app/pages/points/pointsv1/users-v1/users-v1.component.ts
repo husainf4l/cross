@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -16,13 +16,18 @@ import { V1Service } from '../../services/v1.service';
 export class Usersv1Component implements OnInit {
   users: v1UserRecord[] = [];
   isLoading = true;
-  constructor(private router: Router, private v1Service: V1Service) { }
+  debug = false
+
+  constructor(private router: Router, private v1Service: V1Service, private route: ActivatedRoute) { }
+
 
 
   ngOnInit(): void {
 
     this.fetchUsers();
-
+    this.route.queryParams.subscribe(params => {
+      this.debug = params['debug'] === 'true';
+    });
   }
 
 
