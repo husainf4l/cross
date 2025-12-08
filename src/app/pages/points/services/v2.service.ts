@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { v2Transactions, v2UserRecord } from './models/pointsv2.model';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../../environments/environment';
 
 
 @Injectable({

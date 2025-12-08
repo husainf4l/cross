@@ -1,11 +1,20 @@
 import { Routes } from '@angular/router';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
 import { POINTS_ROUTES } from './pages/points/points.routes';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
     {
+        path: 'signin',
+        loadComponent: () =>
+            import('./pages/signin/signin.component').then(
+                (c) => c.SigninComponent
+            ),
+    },
+    {
         path: '',
         component: MainLayoutComponent,
+        canActivate: [authGuard],
         children: [
             {
                 path: '',

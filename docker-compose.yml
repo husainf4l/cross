@@ -1,0 +1,16 @@
+services:
+  cross-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+    networks:
+      - cross-network
+
+networks:
+  cross-network:
+    driver: bridge

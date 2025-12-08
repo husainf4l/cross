@@ -1,0 +1,13 @@
+# Docker ignore file for Angular application
+node_modules
+npm-debug.log
+dist
+.angular
+.vscode
+.git
+.gitignore
+*.md
+*.log
+.editorconfig
+karma.conf.js
+.browserslistrc

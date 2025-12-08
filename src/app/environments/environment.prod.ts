@@ -1,5 +1,4 @@
 export const environment = {
     production: true,
-    apiUrl: 'https://admin.papayatrading.com/api',
-
+    apiUrl: 'https://cross.aqlaan.com/api',
 };
